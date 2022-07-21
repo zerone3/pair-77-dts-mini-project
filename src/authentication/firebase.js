@@ -2,8 +2,10 @@
 import { initializeApp } from 'firebase/app';
 import {
 	getAuth,
+	signInWithEmailAndPassword,
 	createUserWithEmailAndPassword,
 	sendPasswordResetEmail,
+	signOut,
 } from 'firebase/auth';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -34,7 +36,7 @@ const registerUserWithEmailAndPass = async (email, password) => {
 
 const signInUserWithEmailAndPass = async (email, password) => {
 	try {
-        const getUser = await signInUserWithEmailAndPass(email, password);
+		const getUser = await signInWithEmailAndPassword(email, password);
 		console.log(getUser);
 	} catch (err) {
 		console.log(err);
@@ -52,7 +54,7 @@ const resetPassword = async (email) => {
 
 const signOutUser = async () => {
 	try {
-		await signOutUser();
+		await signOut(auth);
 	} catch (err) {
 		console.log(err);
 	}

@@ -8,7 +8,7 @@ const NavBar = () => {
 
 	const buttonSignOutHandler = async () => {
 		await signOutUser();
-		navigate('/users');
+		navigate('/signin');
 	};
 	return (
 		<>
