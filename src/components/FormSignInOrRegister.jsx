@@ -33,7 +33,6 @@ const FormSignInOrRegister = ({ signInOrRegister }) => {
 	};
 
 	const signInHandler = () => {
-		if (!user) alert('User belum terdaftar');
 		signInUserWithEmailAndPass(credential.email, credential.password);
 	};
 
