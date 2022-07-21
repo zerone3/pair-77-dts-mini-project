@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useNavigate } from 'react-router-dom';
-import { Grid, TextField, Box, Button } from '@mui/material';
+import styles from './FormSignInOrRegister.module.css';
 import {
 	auth,
 	registerUserWithEmailAndPass,
 	signInUserWithEmailAndPass,
 } from '../authentication/firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { useNavigate } from 'react-router-dom';
+import { Typography, Grid, TextField, Box, Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const FormSignInOrRegister = ({ signInOrRegister }) => {
 	const navigate = useNavigate();
-	const [user, isLoading] = useAuthState(auth);
-
 	const [credential, setCredential] = useState({
 		email: '',
 		password: '',
 	});
+	const [user, isLoading] = useAuthState(auth);
 
 	const textEmailOnChangHandler = (event) => {
 		setCredential({
@@ -32,6 +33,7 @@ const FormSignInOrRegister = ({ signInOrRegister }) => {
 	};
 
 	const signInHandler = () => {
+		if (!user) alert('User belum terdaftar');
 		signInUserWithEmailAndPass(credential.email, credential.password);
 	};
 
@@ -51,35 +53,66 @@ const FormSignInOrRegister = ({ signInOrRegister }) => {
 	return (
 		<>
 			<div style={{ padding: 30 }}>
-				<Box
-					sx={{
-						width: 300,
-						height: 300,
-						backgroundColor: 'cyan',
-						opacity: [0.9, 0.8, 0.7],
-					}}
-                >
-                    <Grid xs={6}>
-                        <img src="../../public/logo192.png" alt="tes" />
-                    </Grid>
-                    <Grid
-                        xs={6}
-						spacing={3}
-						direction={'column'}
-						justify={'center'}
-						alignItems={'center'}
-					>
-						<Grid item xs={12}>
-							<TextField label='Email' type={'email'} value={credential.email} onChange={textEmailOnChangHandler}></TextField>
-						</Grid>
-						<Grid item xs={12}>
-                            <TextField label='Password' type={'password'} value={credential.password} onChange={textPassOnChangeHandler}></TextField>
-						</Grid>
-						<Grid item xs={12}>
-                            <Button fullWidth onClick={buttonSignInOrRegisterHandler} >{ signInOrRegister === 'signin' ? 'SignIn' : 'Register' }</Button>
-						</Grid>
-					</Grid>
-				</Box>
+				<Grid
+					container
+					spacing={0}
+					direction='column'
+					alignItems='center'
+					justifyContent='center'
+					style={{ minHeight: '95vh' }}
+				>
+					<Box>
+						<img
+							href='https://img.tek.id/img/content/2021/10/27/46199/rilis-diundur-doctor-strange-2-lakukan-syuting-tambahan-WUYV46xv6R.jpg'
+							alt=''
+						/>
+					</Box>
+					<Box className={styles.box} component='form' noValidate>
+						<Typography variant='body1'>
+							{signInOrRegister === 'signin' ? 'Sign In Page' : 'Register Page'}
+						</Typography>
+
+						<TextField
+							label='Email'
+							type='email'
+							variant='outlined'
+							size='small'
+							value={credential.email}
+							onChange={textEmailOnChangHandler}
+						/>
+
+						<TextField
+							label='password'
+							type='Password'
+							variant='outlined'
+							size='small'
+							value={credential.password}
+							onChange={textPassOnChangeHandler}
+						/>
+
+						<Button
+							variant='outlined'
+							size='small'
+							onClick={buttonSignInOrRegisterHandler}
+						>
+							{signInOrRegister === 'signin' ? 'Sign In' : 'Register Account'}
+						</Button>
+
+						{signInOrRegister === 'signin' ? (
+							<Link to='/register'>
+								<Typography variant='body1'>
+									or do you want Register ?
+								</Typography>
+							</Link>
+						) : (
+							<Link to='/signin'>
+								<Typography variant='body1'>
+									or do you want Sign In ?
+								</Typography>
+							</Link>
+						)}
+					</Box>
+				</Grid>
 			</div>
 		</>
 	);
